@@ -30,7 +30,7 @@ const Dashboard: React.FC = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: primaryColor, // Definindo a cor de fundo do AppBar
+          backgroundColor: primaryColor,
           zIndex: (theme) => theme.zIndex.drawer + 1,
           transition: (theme) =>
             theme.transitions.create(["width", "margin"], {
