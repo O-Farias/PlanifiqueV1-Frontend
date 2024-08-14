@@ -13,6 +13,7 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import PersonIcon from "@mui/icons-material/Person";
 
 interface SidebarProps {
   open: boolean;
@@ -33,6 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       icon: <InsertChartOutlinedIcon sx={{ color: primaryColor }} />,
     },
     { text: "Categorias", icon: <ListAltIcon sx={{ color: "red" }} /> },
+    { text: "Perfil", icon: <PersonIcon sx={{ color: "purple" }} /> },
   ];
   return (
     <Drawer
