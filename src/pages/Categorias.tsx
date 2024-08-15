@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 
 const drawerWidth = 240;
-const primaryColor = "#FF0000"; // Cor vermelha para corresponder ao ícone
+const primaryColor = "#FF0000"; 
 
 const Categorias: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();

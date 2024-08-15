@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 
 const drawerWidth = 240;
-const primaryColor = "#1976d2"; // Cor azul padrão do Material-UI
+const primaryColor = "#1976d2";
 
 const Dashboard: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
