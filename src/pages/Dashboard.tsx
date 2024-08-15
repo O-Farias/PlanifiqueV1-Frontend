@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   AppBar,
@@ -9,19 +9,21 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import { useSidebar } from "../contexts/SidebarContext";
 
 const drawerWidth = 240;
 const primaryColor = "#1976d2"; // Cor azul padrão do Material-UI
 
 const Dashboard: React.FC = () => {
-  const [open, setOpen] = useState(false);
+  const { isOpen, toggleSidebar } = useSidebar();
+  const navigate = useNavigate();
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const handleLogout = async () => {
+    // lógica para limpar o estado de autenticação,
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+    // Redireciona para a página de login
+    navigate("/login");
   };
 
   return (
@@ -37,7 +39,7 @@ const Dashboard: React.FC = () => {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
             }),
-          ...(open && {
+          ...(isOpen && {
             marginLeft: drawerWidth,
             width: `calc(100% - ${drawerWidth}px)`,
             transition: (theme) =>
@@ -52,11 +54,11 @@ const Dashboard: React.FC = () => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={toggleSidebar}
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: "none" }),
+              ...(isOpen && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -67,12 +69,7 @@ const Dashboard: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      <Sidebar
-        open={open}
-        onClose={handleDrawerClose}
-        drawerWidth={drawerWidth}
-        primaryColor={primaryColor}
-      />
+      <Sidebar drawerWidth={drawerWidth} onLogout={handleLogout} />
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
