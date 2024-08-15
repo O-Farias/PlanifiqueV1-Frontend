@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, Container } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Cadastro: React.FC = () => {
   const [nome, setNome] = useState("");
@@ -118,6 +119,16 @@ const Cadastro: React.FC = () => {
             >
               Cadastrar
             </Button>
+            <Box sx={{ textAlign: "center", mt: 2 }}>
+              <Typography variant="body2" component="span">
+                Já possui uma conta?{" "}
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <Typography variant="body2" component="span" color="primary">
+                    Clique aqui para fazer login
+                  </Typography>
+                </Link>
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Container>
