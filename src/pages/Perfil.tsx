@@ -12,8 +12,8 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 
-const drawerWidth = 240;
-const primaryColor = "#800080";
+const drawerWidth = 240; // largura do sidebar
+const primaryColor = "#800080"; // cor principal do app bar
 
 const Perfil: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();

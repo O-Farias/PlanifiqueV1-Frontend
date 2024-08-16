@@ -12,8 +12,8 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 
-const drawerWidth = 240;
-const primaryColor = "#FF0000"; 
+const drawerWidth = 240; // Largura do menu lateral
+const primaryColor = "#FF0000";  // Cor principal do app bar
 
 const Categorias: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
