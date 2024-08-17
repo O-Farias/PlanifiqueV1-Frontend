@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { TextField, Button, Avatar, Box } from "@mui/material";
+import React, { useState, useRef } from "react";
+import { TextField, Button, Avatar, Box, IconButton } from "@mui/material";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 
 interface UserInfo {
   name: string;
@@ -20,6 +22,8 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   isEditable = true,
 }) => {
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,6 +33,28 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(userInfo);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserInfo((prevInfo) => ({
+          ...prevInfo,
+          profilePicture: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePhotoClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleCameraClick = () => {
+    cameraInputRef.current?.click();
   };
 
   return (
@@ -47,9 +73,53 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
         marginRight: "50px",
       }}
     >
-      <Avatar
-        src={userInfo.profilePicture}
-        sx={{ width: 100, height: 100, margin: "20px auto" }}
+      <Box sx={{ position: "relative", marginBottom: "30px" }}>
+        <Avatar
+          src={userInfo.profilePicture}
+          sx={{ width: 100, height: 100, margin: "20px auto" }}
+        />
+        {isEditable && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "-30px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <IconButton
+              onClick={handlePhotoClick}
+              size="small"
+              sx={{ bgcolor: "background.paper" }}
+            >
+              <PhotoLibraryIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleCameraClick}
+              size="small"
+              sx={{ bgcolor: "background.paper" }}
+            >
+              <CameraAltIcon />
+            </IconButton>
+          </Box>
+        )}
+      </Box>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        style={{ display: "none" }}
+      />
+      <input
+        type="file"
+        ref={cameraInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        capture="user"
+        style={{ display: "none" }}
       />
       <TextField
         fullWidth
