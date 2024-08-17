@@ -35,7 +35,12 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ maxWidth: 400, margin: "auto" }}
+      sx={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <Avatar
         src={userInfo.profilePicture}
@@ -76,7 +81,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, width: "100%" }}
         >
           Salvar Alterações
         </Button>
@@ -84,5 +89,4 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
     </Box>
   );
 };
-
 export default UserInfoForm;
