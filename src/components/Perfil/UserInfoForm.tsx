@@ -37,9 +37,14 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
       onSubmit={handleSubmit}
       sx={{
         width: "100%",
+        maxWidth: "400px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        alignSelf: "flex-start",
+        marginLeft: "-15px",
+        marginTop: "30px",
+        marginRight: "50px",
       }}
     >
       <Avatar
