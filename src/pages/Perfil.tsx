@@ -136,10 +136,9 @@ const Perfil: React.FC = () => {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
             height: "100%",
-
             "@media (max-width: 600px)": {
               height: "auto",
               padding: "20px",
@@ -152,8 +151,11 @@ const Perfil: React.FC = () => {
               alignItems: "center",
               paddingBottom: "10px",
               marginBottom: "20px",
+              marginTop: "20px",
+              marginLeft: "-15px",
               position: "relative",
               width: "100%",
+              maxWidth: "400px",
               "&::after": {
                 content: '""',
                 position: "absolute",
@@ -189,10 +191,12 @@ const Perfil: React.FC = () => {
               </Typography>
             </Box>
           </Box>
-          <UserInfoForm
-            initialUserInfo={initialUserInfo}
-            onSubmit={handleSubmit}
-          />
+          <Box sx={{ width: "100%", maxWidth: "400px" }}>
+            <UserInfoForm
+              initialUserInfo={initialUserInfo}
+              onSubmit={handleSubmit}
+            />
+          </Box>
         </Box>
       </Box>
       <Snackbar
