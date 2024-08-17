@@ -85,8 +85,14 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
         <Button
           type="submit"
           variant="contained"
-          color="primary"
-          sx={{ mt: 2, width: "100%" }}
+          sx={{
+            mt: 2,
+            width: "100%",
+            backgroundColor: "#800080",
+            "&:hover": {
+              backgroundColor: "#6a006a",
+            },
+          }}
         >
           Salvar Alterações
         </Button>
