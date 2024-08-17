@@ -1,1 +1,1 @@
-Em construção. 
+Aplicação Web para o gerenciamento de finanças.
