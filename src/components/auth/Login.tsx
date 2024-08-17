@@ -6,6 +6,7 @@ import {
   Typography,
   Container,
   Link,
+  Alert,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -14,9 +15,23 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError(""); // Limpa o erro
+
+    if (!email || !senha) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    // Valida o e-mail
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Por favor, insira um e-mail válido.");
+      return;
+    }
+
     console.log("Tentativa de login com:", email, senha);
     // lógica de autenticação
     // Se o login for bem-sucedido:
@@ -67,6 +82,11 @@ const Login: React.FC = () => {
           <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
             Login
           </Typography>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -75,6 +95,7 @@ const Login: React.FC = () => {
           >
             <TextField
               margin="normal"
+              required
               fullWidth
               id="email"
               label="E-mail"
@@ -83,10 +104,11 @@ const Login: React.FC = () => {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              InputLabelProps={{ required: false }}
+              error={!!error && !email}
             />
             <TextField
               margin="normal"
+              required
               fullWidth
               name="senha"
               label="Senha"
@@ -95,7 +117,7 @@ const Login: React.FC = () => {
               autoComplete="current-password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
-              InputLabelProps={{ required: false }}
+              error={!!error && !senha}
             />
             <Button
               type="submit"
