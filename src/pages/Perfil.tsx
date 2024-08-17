@@ -201,9 +201,13 @@ const Perfil: React.FC = () => {
       </Box>
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        sx={{
+          top: { xs: 72, sm: 80 },
+          right: { xs: 16, sm: 24 },
+        }}
       >
         <Alert
           onClose={handleCloseSnackbar}
