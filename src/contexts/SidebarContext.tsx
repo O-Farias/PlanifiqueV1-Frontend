@@ -6,10 +6,10 @@ interface SidebarContextType {
   toggleSidebar: () => void;
 }
 
-// Criando o contexto SidebarProvider e o hook useSidebar
+//contexto SidebarProvider e o hook useSidebar
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-// Criando o Provider SidebarProvider que irá prover o contexto SidebarContext
+//  Provider SidebarProvider que irá prover o contexto SidebarContext
 export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -31,7 +31,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (context === undefined) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
+    throw new Error("useSidebar deve ser usado dentro de um SidebarProvider");
   }
   return context;
 };
