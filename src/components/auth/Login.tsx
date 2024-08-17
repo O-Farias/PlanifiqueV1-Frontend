@@ -7,6 +7,7 @@ import {
   Container,
   Link,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,9 +35,13 @@ const Login: React.FC = () => {
     }
 
     console.log("Tentativa de login com:", email, senha);
-    // lógica de autenticação
-    // Se o login for bem-sucedido:
-    navigate("/dashboard");
+    // Simula o processo de login
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      // Aqui você colocaria a lógica real de autenticação
+      navigate("/dashboard");
+    }, 3000); // 3 segundos de carregamento
   };
 
   return (
@@ -124,8 +130,9 @@ const Login: React.FC = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
-              Entrar
+              {isLoading ? <CircularProgress size={24} /> : "Entrar"}
             </Button>
             <Box
               sx={{
