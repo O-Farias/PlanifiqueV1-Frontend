@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { TextField, Button, Avatar, Box, IconButton } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -25,6 +25,14 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    // Carrega a imagem do localStorage quando o componente é montado
+    const savedImage = localStorage.getItem("userProfilePicture");
+    if (savedImage) {
+      setUserInfo((prevInfo) => ({ ...prevInfo, profilePicture: savedImage }));
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
@@ -40,10 +48,13 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        const result = reader.result as string;
         setUserInfo((prevInfo) => ({
           ...prevInfo,
-          profilePicture: reader.result as string,
+          profilePicture: result,
         }));
+        // Salva a imagem no localStorage
+        localStorage.setItem("userProfilePicture", result);
       };
       reader.readAsDataURL(file);
     }
