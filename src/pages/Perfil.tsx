@@ -113,14 +113,15 @@ const Perfil: React.FC = () => {
       </AppBar>
 
       <Sidebar drawerWidth={drawerWidth} onLogout={handleLogout} />
-
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
           width: "100%",
-          marginLeft: isOpen ? `${drawerWidth}px` : 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // Centraliza o conteúdo verticalmente
           transition: (theme) =>
             theme.transitions.create(["margin", "width"], {
               easing: theme.transitions.easing.sharp,
@@ -131,11 +132,18 @@ const Perfil: React.FC = () => {
         <Toolbar />
         <Box
           sx={{
+            maxWidth: "600px",
+            width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start",
-            mb: 4,
-            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+
+            "@media (max-width: 600px)": {
+              height: "auto",
+              padding: "20px",
+            },
           }}
         >
           <Box
@@ -143,7 +151,9 @@ const Perfil: React.FC = () => {
               display: "flex",
               alignItems: "center",
               paddingBottom: "10px",
+              marginBottom: "20px",
               position: "relative",
+              width: "100%",
               "&::after": {
                 content: '""',
                 position: "absolute",
@@ -179,11 +189,11 @@ const Perfil: React.FC = () => {
               </Typography>
             </Box>
           </Box>
+          <UserInfoForm
+            initialUserInfo={initialUserInfo}
+            onSubmit={handleSubmit}
+          />
         </Box>
-        <UserInfoForm
-          initialUserInfo={initialUserInfo}
-          onSubmit={handleSubmit}
-        />
       </Box>
       <Snackbar
         open={snackbar.open}
