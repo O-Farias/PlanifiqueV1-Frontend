@@ -121,7 +121,7 @@ const Perfil: React.FC = () => {
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center", // Centraliza o conteúdo verticalmente
+          alignItems: "center",
           transition: (theme) =>
             theme.transitions.create(["margin", "width"], {
               easing: theme.transitions.easing.sharp,
