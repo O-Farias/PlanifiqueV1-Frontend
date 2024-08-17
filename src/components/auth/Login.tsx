@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      // Aqui você colocaria a lógica real de autenticação
+      // Adicionar a lógica real de autenticação
       navigate("/dashboard");
     }, 3000); // 3 segundos de carregamento
   };
