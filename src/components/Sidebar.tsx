@@ -51,6 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ drawerWidth, onLogout }) => {
     setIsLoggingOut(true);
 
     try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       await onLogout();
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
