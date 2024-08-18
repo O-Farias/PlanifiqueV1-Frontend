@@ -6,6 +6,11 @@ import {
   Box,
   IconButton,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -32,6 +37,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     // Carrega a imagem do localStorage quando o componente é montado
@@ -48,12 +54,21 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setOpenDialog(true);
+  };
+
+  const handleConfirm = () => {
+    setOpenDialog(false);
     setIsLoading(true);
 
     setTimeout(() => {
       onSubmit(userInfo);
       setIsLoading(false);
     }, 2000);
+  };
+
+  const handleCancel = () => {
+    setOpenDialog(false);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,6 +211,27 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
           )}
         </Button>
       )}
+      <Dialog
+        open={openDialog}
+        onClose={handleCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirmar alterações"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza que deseja salvar as alterações?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel}>Cancelar</Button>
+          <Button onClick={handleConfirm} autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
