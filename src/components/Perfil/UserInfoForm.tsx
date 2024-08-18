@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TextField, Button, Avatar, Box, IconButton } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Avatar,
+  Box,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 
@@ -24,6 +31,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Carrega a imagem do localStorage quando o componente é montado
@@ -40,7 +48,12 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(userInfo);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      onSubmit(userInfo);
+      setIsLoading(false);
+    }, 2000);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,6 +179,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
         <Button
           type="submit"
           variant="contained"
+          disabled={isLoading}
           sx={{
             mt: 2,
             width: "100%",
@@ -175,10 +189,15 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
             },
           }}
         >
-          Salvar Alterações
+          {isLoading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Salvar Alterações"
+          )}
         </Button>
       )}
     </Box>
   );
 };
+
 export default UserInfoForm;
