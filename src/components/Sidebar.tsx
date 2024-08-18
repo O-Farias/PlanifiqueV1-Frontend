@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSidebar } from "../contexts/SidebarContext";
 import {
   Drawer,
@@ -16,6 +16,7 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
@@ -34,13 +35,29 @@ const Sidebar: React.FC<SidebarProps> = ({ drawerWidth, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openLogoutDialog, setOpenLogoutDialog] = React.useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleOpenLogoutDialog = () => {
     setOpenLogoutDialog(true);
   };
 
   const handleCloseLogoutDialog = () => {
-    setOpenLogoutDialog(false);
+    if (!isLoggingOut) {
+      setOpenLogoutDialog(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+
+    try {
+      await onLogout();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    } finally {
+      setIsLoggingOut(false);
+      setOpenLogoutDialog(false);
+    }
   };
 
   const menuItems = [
@@ -127,15 +144,15 @@ const Sidebar: React.FC<SidebarProps> = ({ drawerWidth, onLogout }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseLogoutDialog}>Cancelar</Button>
+          <Button onClick={handleCloseLogoutDialog} disabled={isLoggingOut}>
+            Cancelar
+          </Button>
           <Button
-            onClick={async () => {
-              handleCloseLogoutDialog();
-              await onLogout();
-            }}
-            autoFocus
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            variant="contained"
           >
-            Confirmar
+            {isLoggingOut ? <CircularProgress size={24} /> : "Confirmar"}
           </Button>
         </DialogActions>
       </Dialog>
