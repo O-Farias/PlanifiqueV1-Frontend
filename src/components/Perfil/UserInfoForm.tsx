@@ -19,7 +19,9 @@ interface UserInfo {
   name: string;
   email: string;
   profilePicture: string;
+  currentPassword?: string;
   newPassword?: string;
+  confirmNewPassword?: string;
 }
 
 interface UserInfoFormProps {
@@ -33,7 +35,13 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   onSubmit,
   isEditable = true,
 }) => {
-  const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    ...initialUserInfo,
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +62,11 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (userInfo.newPassword !== userInfo.confirmNewPassword) {
+      // lógica para mostrar um erro ao usuário
+      console.error("As senhas não coincidem");
+      return;
+    }
     setOpenDialog(true);
   };
 
@@ -180,16 +193,38 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
         disabled={!isEditable}
       />
       {isEditable && (
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Nova Senha"
-          name="newPassword"
-          type="password"
-          value={userInfo.newPassword || ""}
-          onChange={handleChange}
-        />
+        <>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Senha Atual"
+            name="currentPassword"
+            type="password"
+            value={userInfo.currentPassword || ""}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Nova Senha"
+            name="newPassword"
+            type="password"
+            value={userInfo.newPassword || ""}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Confirmar Nova Senha"
+            name="confirmNewPassword"
+            type="password"
+            value={userInfo.confirmNewPassword || ""}
+            onChange={handleChange}
+          />
+        </>
       )}
+
       {isEditable && (
         <Button
           type="submit"
