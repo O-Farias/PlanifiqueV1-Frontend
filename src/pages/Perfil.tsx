@@ -15,6 +15,7 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 import UserInfoForm from "../components/Perfil/UserInfoForm";
+import UserAvatar from "../components/UserAvatar";
 
 const drawerWidth = 240;
 const primaryColor = "#800080";
@@ -109,6 +110,16 @@ const Perfil: React.FC = () => {
           <Typography variant="h6" noWrap component="div">
             Perfil
           </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: 5,
+            }}
+          >
+            <UserAvatar onLogout={handleLogout} size={50} />
+          </Box>
         </Toolbar>
       </AppBar>
 
