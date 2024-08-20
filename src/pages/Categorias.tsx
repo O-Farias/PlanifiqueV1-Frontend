@@ -11,9 +11,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
+import UserAvatar from "../components/UserAvatar";
 
-const drawerWidth = 240; // Largura do menu lateral
-const primaryColor = "#FF0000";  // Cor principal do app bar
+const drawerWidth = 240;
+const primaryColor = "#FF0000";
 
 const Categorias: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
@@ -64,6 +65,16 @@ const Categorias: React.FC = () => {
           <Typography variant="h6" noWrap component="div">
             Categorias
           </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: 5,
+            }}
+          >
+            <UserAvatar onLogout={handleLogout} size={50} />
+          </Box>
         </Toolbar>
       </AppBar>
 
