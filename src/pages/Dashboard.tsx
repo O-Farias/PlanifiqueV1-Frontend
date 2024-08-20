@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 import UserAvatar from "../components/UserAvatar";
 
-const drawerWidth = 240; // Largura do menu lateral
-const primaryColor = "#1976d2"; // Cor principal do app bar
+const drawerWidth = 240; 
+const primaryColor = "#1976d2"; 
 
 const Dashboard: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
   const handleLogout = async () => {
     // lógica para limpar o estado de autenticação,
 
-    // Redireciona para a página de login
+    
     navigate("/login");
   };
 
