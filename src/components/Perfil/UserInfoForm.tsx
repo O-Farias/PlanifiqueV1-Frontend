@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
+import { useUser } from "../../contexts/UserContext";
 
 interface UserInfo {
   name: string;
@@ -35,6 +36,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   onSubmit,
   isEditable = true,
 }) => {
+  const { setUserPhoto } = useUser();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     ...initialUserInfo,
     currentPassword: "",
@@ -94,7 +96,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
           ...prevInfo,
           profilePicture: result,
         }));
-        // Salva a imagem no localStorage
+        setUserPhoto(result); // Atualiza a foto no contexto global
         localStorage.setItem("userProfilePicture", result);
       };
       reader.readAsDataURL(file);
