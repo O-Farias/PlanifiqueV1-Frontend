@@ -6,6 +6,7 @@ import {
   Typography,
   Box,
   ListItemIcon,
+  Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
@@ -83,6 +84,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
           </ListItemIcon>
           <Typography variant="inherit">Perfil</Typography>
         </MenuItem>
+        <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
