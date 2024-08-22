@@ -36,7 +36,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   onSubmit,
   isEditable = true,
 }) => {
-  const { setUserPhoto } = useUser();
+  const { setUserPhoto, setUserName } = useUser();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     ...initialUserInfo,
     currentPassword: "",
@@ -78,6 +78,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
 
     setTimeout(() => {
       onSubmit(userInfo);
+      setUserName(userInfo.name);
       setIsLoading(false);
     }, 2000);
   };
