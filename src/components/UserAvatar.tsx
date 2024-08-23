@@ -8,6 +8,12 @@ import {
   ListItemIcon,
   Divider,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -22,6 +28,7 @@ interface UserAvatarProps {
 const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const { userPhoto, userName } = useUser();
   const navigate = useNavigate();
 
@@ -38,6 +45,15 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
     handleClose();
   };
 
+  const handleOpenLogoutDialog = () => {
+    setOpenLogoutDialog(true);
+    handleClose();
+  };
+
+  const handleCloseLogoutDialog = () => {
+    setOpenLogoutDialog(false);
+  };
+
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -47,7 +63,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
       console.error("Erro ao fazer logout:", error);
     } finally {
       setIsLoggingOut(false);
-      handleClose();
+      setOpenLogoutDialog(false);
     }
   };
 
@@ -95,19 +111,40 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
           <Typography variant="inherit">Perfil</Typography>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleLogout} disabled={isLoggingOut}>
+        <MenuItem onClick={handleOpenLogoutDialog}>
           <ListItemIcon>
-            {isLoggingOut ? (
-              <CircularProgress size={20} />
-            ) : (
-              <LogoutIcon fontSize="small" />
-            )}
+            <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          <Typography variant="inherit">
-            {isLoggingOut ? "Saindo..." : "Sair"}
-          </Typography>
+          <Typography variant="inherit">Sair</Typography>
         </MenuItem>
       </Menu>
+
+      <Dialog
+        open={openLogoutDialog}
+        onClose={handleCloseLogoutDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmar saída"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza que deseja sair? Você será redirecionado para a página
+            de login.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseLogoutDialog} disabled={isLoggingOut}>
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            variant="contained"
+          >
+            {isLoggingOut ? <CircularProgress size={24} /> : "Confirmar"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
