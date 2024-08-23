@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Box,
   Menu,
   MenuItem,
   Typography,
-  Box,
   ListItemIcon,
   Divider,
+  CircularProgress,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../contexts/UserContext";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
 
 interface UserAvatarProps {
-  onLogout: () => void;
+  onLogout: () => Promise<void>;
   size?: number;
 }
 
 const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const { userPhoto, userName } = useUser();
   const navigate = useNavigate();
 
@@ -36,9 +38,17 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
     handleClose();
   };
 
-  const handleLogout = () => {
-    onLogout();
-    handleClose();
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await onLogout();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    } finally {
+      setIsLoggingOut(false);
+      handleClose();
+    }
   };
 
   return (
@@ -85,11 +95,17 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
           <Typography variant="inherit">Perfil</Typography>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={handleLogout} disabled={isLoggingOut}>
           <ListItemIcon>
-            <LogoutIcon fontSize="small" />
+            {isLoggingOut ? (
+              <CircularProgress size={20} />
+            ) : (
+              <LogoutIcon fontSize="small" />
+            )}
           </ListItemIcon>
-          <Typography variant="inherit">Sair</Typography>
+          <Typography variant="inherit">
+            {isLoggingOut ? "Saindo..." : "Sair"}
+          </Typography>
         </MenuItem>
       </Menu>
     </>
