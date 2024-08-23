@@ -27,7 +27,6 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Criando o Hook useSidebar que irá consumir o contexto SidebarContext
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (context === undefined) {
