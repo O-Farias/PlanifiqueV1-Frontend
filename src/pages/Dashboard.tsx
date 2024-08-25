@@ -12,6 +12,7 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 import UserAvatar from "../components/UserAvatar";
+import TransactionForm from '../components/Dashboard/TransactionForm';
 
 const drawerWidth = 240; 
 const primaryColor = "#1976d2"; 
@@ -82,12 +83,11 @@ const Dashboard: React.FC = () => {
 
       <Sidebar drawerWidth={drawerWidth} onLogout={handleLogout} />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        <Typography paragraph>
-          Bem-vindo ao Dashboard! O conteúdo principal vai aqui.
-        </Typography>
-      </Box>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Toolbar />
+            <TransactionForm />
+
+        </Box>
     </Box>
   );
 };
