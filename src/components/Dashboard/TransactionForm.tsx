@@ -3,7 +3,7 @@ import { Box, TextField, Button, MenuItem, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { ptBR } from "date-fns/locale"; // Importando a localização em português do Brasil
+import { ptBR } from "date-fns/locale";
 
 interface Transaction {
   description: string;
