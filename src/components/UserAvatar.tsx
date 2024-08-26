@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -29,8 +29,20 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ onLogout, size }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
-  const { userPhoto, userName } = useUser();
+  const { userPhoto, userName, setUserPhoto, setUserName } = useUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Carrega a imagem e o nome do localStorage quando o componente é montado
+    const savedImage = localStorage.getItem("userProfilePicture");
+    const savedName = localStorage.getItem("userName");
+    if (savedImage) {
+      setUserPhoto(savedImage);
+    }
+    if (savedName) {
+      setUserName(savedName);
+    }
+  }, [setUserPhoto, setUserName]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
