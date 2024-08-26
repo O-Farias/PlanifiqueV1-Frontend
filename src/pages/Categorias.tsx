@@ -127,6 +127,22 @@ const Categorias: React.FC = () => {
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             margin="normal"
+            sx={{ width: "200px", height: "40px" }}
+            InputProps={{
+              sx: {
+                height: "100%",
+                "& .MuiInputBase-input": {
+                  height: "100%",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                lineHeight: "13px",
+              },
+            }}
           />
           <Button
             variant="contained"
