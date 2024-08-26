@@ -12,6 +12,8 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,6 +39,8 @@ const Categorias: React.FC = () => {
   ]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleLogout = async () => {
     // lógica para limpar o estado de autenticação
@@ -44,15 +48,34 @@ const Categorias: React.FC = () => {
   };
 
   const handleAddCategory = () => {
+    if (newCategory.trim() === "") {
+      setSnackbarMessage("Por favor, insira um nome para a categoria.");
+      setOpenSnackbar(true);
+      return;
+    }
+
     if (editIndex !== null) {
       const updatedCategories = [...categories];
       updatedCategories[editIndex] = newCategory;
       setCategories(updatedCategories);
       setEditIndex(null);
+      setSnackbarMessage("Categoria editada com sucesso!");
     } else {
       setCategories([...categories, newCategory]);
+      setSnackbarMessage("Nova categoria adicionada com sucesso!");
     }
     setNewCategory("");
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
   };
 
   const handleEditCategory = (index: number) => {
@@ -61,7 +84,10 @@ const Categorias: React.FC = () => {
   };
 
   const handleDeleteCategory = (index: number) => {
+    const deletedCategory = categories[index];
     setCategories(categories.filter((_, i) => i !== index));
+    setSnackbarMessage(`Categoria "${deletedCategory}" removida com sucesso!`);
+    setOpenSnackbar(true);
   };
 
   return (
@@ -181,6 +207,30 @@ const Categorias: React.FC = () => {
           ))}
         </List>
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        sx={{
+          top: { xs: 72, sm: 80 },
+          right: { xs: 16, sm: 24 },
+        }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={
+            snackbarMessage.includes("Por favor")
+              ? "error"
+              : snackbarMessage.includes("removida")
+              ? "info"
+              : "success"
+          }
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
