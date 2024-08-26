@@ -3,6 +3,7 @@ import { Box, TextField, Button, MenuItem, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ptBR } from "date-fns/locale"; // Importando a localização em português do Brasil
 
 interface Transaction {
   description: string;
@@ -111,7 +112,7 @@ const TransactionForm: React.FC = () => {
             },
         }}
       />
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
         <DatePicker
           label="Data"
           value={transaction.date}
