@@ -50,10 +50,14 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    // Carrega a imagem do localStorage quando o componente é montado
+    // Carrega a imagem e o nome do localStorage quando o componente é montado
     const savedImage = localStorage.getItem("userProfilePicture");
+    const savedName = localStorage.getItem("userName");
     if (savedImage) {
       setUserInfo((prevInfo) => ({ ...prevInfo, profilePicture: savedImage }));
+    }
+    if (savedName) {
+      setUserInfo((prevInfo) => ({ ...prevInfo, name: savedName }));
     }
   }, []);
 
@@ -79,6 +83,8 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
     setTimeout(() => {
       onSubmit(userInfo);
       setUserName(userInfo.name);
+      setUserPhoto(userInfo.profilePicture); // Atualiza a foto no contexto global
+      localStorage.setItem("userName", userInfo.name); // Salva o nome no local storage
       setIsLoading(false);
     }, 2000);
   };
