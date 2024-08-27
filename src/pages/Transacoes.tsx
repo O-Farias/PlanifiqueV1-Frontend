@@ -81,7 +81,7 @@ const Transacoes: React.FC = () => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           Gerenciar Transações
         </Typography>
         <Typography variant="body1">
