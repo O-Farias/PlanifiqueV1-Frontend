@@ -148,6 +148,9 @@ const Categorias: React.FC = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Box>
+          <Typography variant="h5" gutterBottom>
+            Gerenciar Categorias
+          </Typography>
           <TextField
             label="Nova Categoria"
             value={newCategory}
