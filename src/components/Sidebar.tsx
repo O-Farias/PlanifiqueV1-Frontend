@@ -23,6 +23,7 @@ import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate, useLocation } from "react-router-dom";
 
 interface SidebarProps {
@@ -69,11 +70,18 @@ const Sidebar: React.FC<SidebarProps> = ({ drawerWidth, onLogout }) => {
       path: "/dashboard",
     },
     {
+      text: "Transações",
+      icon: <AttachMoneyIcon sx={{ color: "green" }} />,
+      onClick: () => navigate("/transacoes"),
+      path: "/transacoes",
+    },
+    {
       text: "Categorias",
       icon: <ListAltIcon sx={{ color: "red" }} />,
       onClick: () => navigate("/categorias"),
       path: "/categorias",
     },
+
     {
       text: "Perfil",
       icon: <PersonIcon sx={{ color: "purple" }} />,
