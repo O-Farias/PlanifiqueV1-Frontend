@@ -8,6 +8,7 @@ import RecuperarSenha from "./components/auth/RecSenha";
 import Dashboard from "./pages/Dashboard";
 import Categorias from "./pages/Categorias";
 import Perfil from "./pages/Perfil";
+import Transacoes from "./pages/Transacoes";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/categorias" element={<Categorias />} />
               <Route path="/perfil" element={<Perfil />} />
+              <Route path="/transacoes" element={<Transacoes />} />
             </Routes>
           </div>
         </Router>
