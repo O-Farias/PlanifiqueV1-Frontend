@@ -126,7 +126,18 @@ const TransactionForm: React.FC = () => {
           }}
         />
       </LocalizationProvider>
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          backgroundColor: "green",
+          color: "#fff",
+          mt: 2,
+          "&:hover": {
+            backgroundColor: "darkgreen",
+          },
+        }}
+      >
         Adicionar Transação
       </Button>
     </Box>
