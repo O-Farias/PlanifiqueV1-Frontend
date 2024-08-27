@@ -175,9 +175,16 @@ const Categorias: React.FC = () => {
           />
           <Button
             variant="contained"
-            color="primary"
+            sx={{
+              backgroundColor: primaryColor,
+              color: "#fff",
+              mt: 2,
+              ml: 2,
+              "&:hover": {
+                backgroundColor: "#FF4500",
+              },
+            }}
             onClick={handleAddCategory}
-            sx={{ mt: 2, ml: 2 }}
           >
             {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
           </Button>
