@@ -12,6 +12,7 @@ import { useSidebar } from "../contexts/SidebarContext";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import UserAvatar from "../components/UserAvatar";
+import TransactionForm from "../components/Dashboard/TransactionForm";
 
 const drawerWidth = 240;
 const primaryColor = "#008000";
@@ -81,13 +82,7 @@ const Transacoes: React.FC = () => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Typography variant="h5" gutterBottom>
-          Gerenciar Transações
-        </Typography>
-        <Typography variant="body1">
-          Aqui você poderá visualizar, adicionar, editar e excluir suas
-          transações financeiras.
-        </Typography>
+        <TransactionForm />
       </Box>
     </Box>
   );
