@@ -153,7 +153,6 @@ const Categorias: React.FC = () => {
             borderRadius: 5,
             padding: 3,
             marginBottom: 2,
-            maxHeight: 300,
           }}
         >
           <Typography variant="h5" gutterBottom>
@@ -197,33 +196,35 @@ const Categorias: React.FC = () => {
             {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
           </Button>
         </Box>
-        <List sx={{ padding: 0 }}>
-          {categories.map((category, index) => (
-            <ListItem key={index} sx={{ borderBottom: "1px solid #ccc" }}>
-              <ListItemText primary={category} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleEditCategory(index)}
-                  sx={{ color: "blue" }}
-                  title="Editar"
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleDeleteCategory(index)}
-                  sx={{ color: "red" }}
-                  title="Excluir"
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
+        <Box sx={{ maxHeight: 300, overflowY: "auto" }}>
+          <List sx={{ padding: 0 }}>
+            {categories.map((category, index) => (
+              <ListItem key={index} sx={{ borderBottom: "1px solid #ccc" }}>
+                <ListItemText primary={category} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => handleEditCategory(index)}
+                    sx={{ color: "blue" }}
+                    title="Editar"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDeleteCategory(index)}
+                    sx={{ color: "red" }}
+                    title="Excluir"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
       <Snackbar
         open={openSnackbar}
