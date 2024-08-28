@@ -12,7 +12,7 @@ import { useSidebar } from "../contexts/SidebarContext";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import UserAvatar from "../components/UserAvatar";
-import TransactionForm from "../components/Dashboard/TransactionForm";
+import TransactionForm from "../components/Transacoes/TransactionForm";
 
 const drawerWidth = 240;
 const primaryColor = "#008000";
