@@ -145,9 +145,17 @@ const Categorias: React.FC = () => {
 
       <Sidebar drawerWidth={drawerWidth} onLogout={handleLogout} />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflowY: "auto" }}>
         <Toolbar />
-        <Box>
+        <Box
+          sx={{
+            backgroundColor: "#fff",
+            borderRadius: 5,
+            padding: 3,
+            marginBottom: 2,
+            maxHeight: 300,
+          }}
+        >
           <Typography variant="h5" gutterBottom>
             Gerenciar Categorias
           </Typography>
@@ -189,9 +197,9 @@ const Categorias: React.FC = () => {
             {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
           </Button>
         </Box>
-        <List>
+        <List sx={{ padding: 0 }}>
           {categories.map((category, index) => (
-            <ListItem key={index}>
+            <ListItem key={index} sx={{ borderBottom: "1px solid #ccc" }}>
               <ListItemText primary={category} />
               <ListItemSecondaryAction>
                 <IconButton
