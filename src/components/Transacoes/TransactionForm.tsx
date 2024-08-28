@@ -10,7 +10,7 @@ interface Transaction {
   description: string;
   category: string;
   amount: number;
-  date: Date | null;
+  date: Date;
 }
 
 const categories = ["Aluguel", "Alimentação", "Transporte", "Lazer", "Outros"];
@@ -23,7 +23,7 @@ const TransactionForm: React.FC<{
     description: "",
     category: "",
     amount: 0,
-    date: null,
+    date: new Date(),
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const TransactionForm: React.FC<{
     setTransaction((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: Date) => {
     setTransaction((prev) => ({ ...prev, date }));
   };
 
@@ -53,6 +53,7 @@ const TransactionForm: React.FC<{
       ...transaction,
       id: Date.now().toString(),
       amount: Number(transaction.amount),
+      date: transaction.date || new Date(), // Use a data atual se nenhuma data for fornecida
     };
     onAddTransaction(newTransaction);
     // Limpar o formulário após o envio
@@ -61,7 +62,7 @@ const TransactionForm: React.FC<{
       description: "",
       category: "",
       amount: 0,
-      date: null,
+      date: new Date(),
     });
   };
 
@@ -130,7 +131,7 @@ const TransactionForm: React.FC<{
         <DatePicker
           label="Data"
           value={transaction.date}
-          onChange={handleDateChange}
+          onChange={(newDate) => handleDateChange(newDate || new Date())}
           slotProps={{
             textField: {
               fullWidth: true,
