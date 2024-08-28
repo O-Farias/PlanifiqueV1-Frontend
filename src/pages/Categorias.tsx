@@ -179,6 +179,12 @@ const Categorias: React.FC = () => {
                 lineHeight: "13px",
               },
             }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                handleAddCategory();
+              }
+            }}
           />
           <Button
             variant="contained"
