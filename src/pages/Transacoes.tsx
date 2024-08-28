@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   AppBar,
@@ -13,13 +13,36 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import UserAvatar from "../components/UserAvatar";
 import TransactionForm from "../components/Transacoes/TransactionForm";
+import TransactionList from "../components/Transacoes/TransactionList";
 
 const drawerWidth = 240;
 const primaryColor = "#008000";
 
+interface Transaction {
+  id: string;
+  description: string;
+  category: string;
+  amount: number;
+  date: Date;
+}
+
 const Transacoes: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    const storedTransactions = localStorage.getItem("transactions");
+    if (storedTransactions) {
+      setTransactions(JSON.parse(storedTransactions));
+    }
+  }, []);
+
+  const handleAddTransaction = (transaction: Transaction) => {
+    const updatedTransactions = [...transactions, transaction];
+    setTransactions(updatedTransactions);
+    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+  };
 
   const handleLogout = async () => {
     navigate("/login");
@@ -82,7 +105,8 @@ const Transacoes: React.FC = () => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <TransactionForm />
+        <TransactionForm onAddTransaction={handleAddTransaction} />
+        <TransactionList transactions={transactions} />
       </Box>
     </Box>
   );

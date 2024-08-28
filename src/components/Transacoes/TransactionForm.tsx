@@ -6,16 +6,20 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ptBR } from "date-fns/locale";
 
 interface Transaction {
+  id: string;
   description: string;
   category: string;
-  amount: number | string;
+  amount: number;
   date: Date | null;
 }
 
 const categories = ["Aluguel", "Alimentação", "Transporte", "Lazer", "Outros"];
 
-const TransactionForm: React.FC = () => {
+const TransactionForm: React.FC<{
+  onAddTransaction: (transaction: Transaction) => void;
+}> = ({ onAddTransaction }) => {
   const [transaction, setTransaction] = useState<Transaction>({
+    id: "",
     description: "",
     category: "",
     amount: 0,
@@ -33,7 +37,7 @@ const TransactionForm: React.FC = () => {
 
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.target.value === "0") {
-      setTransaction((prev) => ({ ...prev, amount: "" }));
+      setTransaction((prev) => ({ ...prev, amount: 0 }));
     }
   };
 
@@ -45,10 +49,20 @@ const TransactionForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // lógica para salvar a transação
-    console.log("Transação submetida:", transaction);
+    const newTransaction = {
+      ...transaction,
+      id: Date.now().toString(),
+      amount: Number(transaction.amount),
+    };
+    onAddTransaction(newTransaction);
     // Limpar o formulário após o envio
-    setTransaction({ description: "", category: "", amount: 0, date: null });
+    setTransaction({
+      id: "",
+      description: "",
+      category: "",
+      amount: 0,
+      date: null,
+    });
   };
 
   return (
