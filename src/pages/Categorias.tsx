@@ -171,56 +171,67 @@ const Categorias: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Gerenciar Categorias
           </Typography>
-          <TextField
-            label="Nova Categoria"
-            value={newCategory.name}
-            onChange={(e) =>
-              setNewCategory({ ...newCategory, name: e.target.value })
-            }
-            margin="normal"
-            sx={{ width: "200px", height: "40px", marginRight: 2 }}
-            InputProps={{
-              sx: {
-                height: "100%",
-                "& .MuiInputBase-input": {
-                  height: "100%",
-                  padding: "10px",
-                  boxSizing: "border-box",
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                lineHeight: "13px",
-              },
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                handleAddCategory();
+          <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+            <TextField
+              label="Nova Categoria"
+              value={newCategory.name}
+              onChange={(e) =>
+                setNewCategory({ ...newCategory, name: e.target.value })
               }
-            }}
-          />
-          <ChromePicker
-            color={newCategory.color}
-            onChange={handleColorChange}
-            disableAlpha={true}
-          />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: primaryColor,
-              color: "#fff",
-              mt: 2,
-              ml: 2,
-              "&:hover": {
-                backgroundColor: "#FF4500",
-              },
-            }}
-            onClick={handleAddCategory}
-          >
-            {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
-          </Button>
+              margin="normal"
+              sx={{ width: "200px" }}
+              InputProps={{
+                sx: {
+                  height: "40px",
+                  "& .MuiInputBase-input": {
+                    height: "100%",
+                    padding: "10px",
+                    boxSizing: "border-box",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  lineHeight: "13px",
+                },
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  handleAddCategory();
+                }
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "16px",
+              }}
+            >
+              <ChromePicker
+                color={newCategory.color}
+                onChange={handleColorChange}
+                disableAlpha={true}
+              />
+            </Box>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: primaryColor,
+                color: "#fff",
+                height: "40px",
+                marginTop: "16px",
+                "&:hover": {
+                  backgroundColor: "#FF4500",
+                },
+              }}
+              onClick={handleAddCategory}
+            >
+              {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
+            </Button>
+          </Box>
         </Box>
         <Box sx={{ maxHeight: 300, overflowY: "auto" }}>
           <List sx={{ padding: 0 }}>
