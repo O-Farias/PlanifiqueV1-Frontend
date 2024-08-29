@@ -28,7 +28,14 @@ const TransactionForm: React.FC<{
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setTransaction((prev) => ({ ...prev, [name]: value }));
+    if (name === "amount") {
+      // Permite campo vazio ou valores positivos
+      if (value === "" || parseFloat(value) > 0) {
+        setTransaction((prev) => ({ ...prev, [name]: value }));
+      }
+    } else {
+      setTransaction((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDateChange = (date: Date) => {
@@ -49,11 +56,14 @@ const TransactionForm: React.FC<{
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (transaction.amount <= 0) {
+      alert("O valor da transação deve ser maior que zero.");
+      return;
+    }
     const newTransaction = {
       ...transaction,
       id: Date.now().toString(),
       amount: Number(transaction.amount),
-      date: transaction.date || new Date(), // Use a data atual se nenhuma data for fornecida
     };
     onAddTransaction(newTransaction);
     // Limpar o formulário após o envio
@@ -103,17 +113,13 @@ const TransactionForm: React.FC<{
         type="number"
         value={transaction.amount}
         onChange={handleChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         margin="normal"
         required
         InputProps={{
           startAdornment: <Typography>R$</Typography>,
           inputProps: {
-            style: {
-              MozAppearance: "textfield",
-            },
-            step: "any",
+            min: "0.01",
+            step: "0.01",
           },
         }}
         sx={{
