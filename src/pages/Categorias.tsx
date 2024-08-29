@@ -22,6 +22,12 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 import UserAvatar from "../components/UserAvatar";
+import { ChromePicker } from "react-color";
+
+interface Category {
+  name: string;
+  color: string;
+}
 
 const drawerWidth = 240;
 const primaryColor = "#FF0000";
@@ -30,14 +36,17 @@ const Categorias: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState<string[]>([
-    "Aluguel",
-    "Alimentação",
-    "Transporte",
-    "Lazer",
-    "Outros",
+  const [categories, setCategories] = useState<Category[]>([
+    { name: "Aluguel", color: "#FF5733" },
+    { name: "Alimentação", color: "#33FF57" },
+    { name: "Transporte", color: "#3357FF" },
+    { name: "Lazer", color: "#F033FF" },
+    { name: "Outros", color: "#33FFF0" },
   ]);
-  const [newCategory, setNewCategory] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<Category>({
+    name: "",
+    color: "#000000",
+  });
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -48,7 +57,7 @@ const Categorias: React.FC = () => {
   };
 
   const handleAddCategory = () => {
-    if (newCategory.trim() === "") {
+    if (newCategory.name.trim() === "") {
       setSnackbarMessage("Por favor, insira um nome para a categoria.");
       setOpenSnackbar(true);
       return;
@@ -64,7 +73,7 @@ const Categorias: React.FC = () => {
       setCategories([...categories, newCategory]);
       setSnackbarMessage("Nova categoria adicionada com sucesso!");
     }
-    setNewCategory("");
+    setNewCategory({ name: "", color: "#000000" });
     setOpenSnackbar(true);
   };
 
@@ -84,10 +93,14 @@ const Categorias: React.FC = () => {
   };
 
   const handleDeleteCategory = (index: number) => {
-    const deletedCategory = categories[index];
+    const deletedCategory = categories[index].name;
     setCategories(categories.filter((_, i) => i !== index));
     setSnackbarMessage(`Categoria "${deletedCategory}" removida com sucesso!`);
     setOpenSnackbar(true);
+  };
+
+  const handleColorChange = (color: any) => {
+    setNewCategory({ ...newCategory, color: color.hex });
   };
 
   return (
@@ -160,10 +173,12 @@ const Categorias: React.FC = () => {
           </Typography>
           <TextField
             label="Nova Categoria"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
+            value={newCategory.name}
+            onChange={(e) =>
+              setNewCategory({ ...newCategory, name: e.target.value })
+            }
             margin="normal"
-            sx={{ width: "200px", height: "40px" }}
+            sx={{ width: "200px", height: "40px", marginRight: 2 }}
             InputProps={{
               sx: {
                 height: "100%",
@@ -186,6 +201,11 @@ const Categorias: React.FC = () => {
               }
             }}
           />
+          <ChromePicker
+            color={newCategory.color}
+            onChange={handleColorChange}
+            disableAlpha={true}
+          />
           <Button
             variant="contained"
             sx={{
@@ -206,7 +226,16 @@ const Categorias: React.FC = () => {
           <List sx={{ padding: 0 }}>
             {categories.map((category, index) => (
               <ListItem key={index} sx={{ borderBottom: "1px solid #ccc" }}>
-                <ListItemText primary={category} />
+                <Box
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    backgroundColor: category.color,
+                    marginRight: 2,
+                  }}
+                />
+                <ListItemText primary={category.name} />
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
