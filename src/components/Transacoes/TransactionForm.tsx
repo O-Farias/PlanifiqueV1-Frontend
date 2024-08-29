@@ -30,14 +30,14 @@ const TransactionForm: React.FC<{
     const { name, value } = event.target;
     if (name === "amount") {
       // Permite campo vazio ou valores positivos
-      if (value === "" || parseFloat(value) > 0) {
-        setTransaction((prev) => ({ ...prev, [name]: value }));
+      const numValue = value === "" ? 0 : parseFloat(value);
+      if (value === "" || numValue > 0) {
+        setTransaction((prev) => ({ ...prev, [name]: numValue }));
       }
     } else {
       setTransaction((prev) => ({ ...prev, [name]: value }));
     }
   };
-
   const handleDateChange = (date: Date) => {
     setTransaction((prev) => ({ ...prev, date }));
   };
@@ -111,7 +111,7 @@ const TransactionForm: React.FC<{
         label="Valor"
         name="amount"
         type="number"
-        value={transaction.amount}
+        value={transaction.amount === 0 ? "" : transaction.amount}
         onChange={handleChange}
         margin="normal"
         required
