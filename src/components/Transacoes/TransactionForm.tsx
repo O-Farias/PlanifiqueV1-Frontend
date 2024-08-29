@@ -38,20 +38,9 @@ const TransactionForm: React.FC<{
       setTransaction((prev) => ({ ...prev, [name]: value }));
     }
   };
+
   const handleDateChange = (date: Date) => {
     setTransaction((prev) => ({ ...prev, date }));
-  };
-
-  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value === "0") {
-      setTransaction((prev) => ({ ...prev, amount: 0 }));
-    }
-  };
-
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value === "") {
-      setTransaction((prev) => ({ ...prev, amount: 0 }));
-    }
   };
 
   const handleSubmit = (event: React.FormEvent) => {
