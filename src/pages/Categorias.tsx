@@ -230,6 +230,7 @@ const Categorias: React.FC = () => {
                   backgroundColor: newCategory.color,
                 },
               }}
+              title="Selecionar cor"
             />
             <Popover
               id={id}
