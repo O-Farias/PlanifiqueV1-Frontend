@@ -14,6 +14,7 @@ import {
   ListItemSecondaryAction,
   Snackbar,
   Alert,
+  Popover,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -50,6 +51,7 @@ const Categorias: React.FC = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleLogout = async () => {
     // lógica para limpar o estado de autenticação
@@ -98,6 +100,19 @@ const Categorias: React.FC = () => {
     setSnackbarMessage(`Categoria "${deletedCategory}" removida com sucesso!`);
     setOpenSnackbar(true);
   };
+
+  const handleColorButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleColorPickerClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "color-popover" : undefined;
 
   const handleColorChange = (color: any) => {
     setNewCategory({ ...newCategory, color: color.hex });
@@ -202,12 +217,28 @@ const Categorias: React.FC = () => {
                 }
               }}
             />
-            <Box
+            <Button
+              aria-describedby={id}
+              onClick={handleColorButtonClick}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                width: 40,
+                height: 40,
+                minWidth: 40,
+                backgroundColor: newCategory.color,
                 marginTop: "16px",
+                "&:hover": {
+                  backgroundColor: newCategory.color,
+                },
+              }}
+            />
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleColorPickerClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
             >
               <ChromePicker
@@ -215,7 +246,7 @@ const Categorias: React.FC = () => {
                 onChange={handleColorChange}
                 disableAlpha={true}
               />
-            </Box>
+            </Popover>
             <Button
               variant="contained"
               sx={{
