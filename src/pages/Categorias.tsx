@@ -284,7 +284,7 @@ const Categorias: React.FC = () => {
                     edge="end"
                     aria-label="edit"
                     onClick={() => handleEditCategory(index)}
-                    sx={{ color: "blue" }}
+                    sx={{ color: "#1976d2" }}
                     title="Editar"
                   >
                     <EditIcon />
@@ -293,7 +293,7 @@ const Categorias: React.FC = () => {
                     edge="end"
                     aria-label="delete"
                     onClick={() => handleDeleteCategory(index)}
-                    sx={{ color: "red" }}
+                    sx={{ color: "#d32f2f" }}
                     title="Excluir"
                   >
                     <DeleteIcon />
