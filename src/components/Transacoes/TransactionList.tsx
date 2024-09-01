@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -30,20 +37,24 @@ const TransactionList: React.FC<TransactionListProps> = ({
             key={transaction.id}
             secondaryAction={
               <>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => onEditTransaction(transaction)}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => onDeleteTransaction(transaction.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip title="Editar">
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => onEditTransaction(transaction)}
+                  >
+                    <EditIcon sx={{ color: "#1976d2" }} />{" "}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Excluir">
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => onDeleteTransaction(transaction.id)}
+                  >
+                    <DeleteIcon sx={{ color: "#d32f2f" }} />{" "}
+                  </IconButton>
+                </Tooltip>
               </>
             }
           >
