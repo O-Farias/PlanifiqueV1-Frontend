@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Button, MenuItem, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -13,11 +13,19 @@ interface Transaction {
   date: Date;
 }
 
+interface TransactionFormProps {
+  onAddTransaction: (transaction: Transaction) => void;
+  onUpdateTransaction: (transaction: Transaction) => void;
+  editingTransaction: Transaction | null;
+}
+
 const categories = ["Aluguel", "Alimentação", "Transporte", "Lazer", "Outros"];
 
-const TransactionForm: React.FC<{
-  onAddTransaction: (transaction: Transaction) => void;
-}> = ({ onAddTransaction }) => {
+const TransactionForm: React.FC<TransactionFormProps> = ({
+  onAddTransaction,
+  onUpdateTransaction,
+  editingTransaction,
+}) => {
   const [transaction, setTransaction] = useState<Transaction>({
     id: "",
     description: "",
@@ -26,10 +34,17 @@ const TransactionForm: React.FC<{
     date: new Date(),
   });
 
+  useEffect(() => {
+    if (editingTransaction) {
+      setTransaction(editingTransaction);
+    } else {
+      resetForm();
+    }
+  }, [editingTransaction]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     if (name === "amount") {
-      // Permite campo vazio ou valores positivos
       const numValue = value === "" ? 0 : parseFloat(value);
       if (value === "" || numValue > 0) {
         setTransaction((prev) => ({ ...prev, [name]: numValue }));
@@ -49,13 +64,20 @@ const TransactionForm: React.FC<{
       alert("O valor da transação deve ser maior que zero.");
       return;
     }
-    const newTransaction = {
-      ...transaction,
-      id: Date.now().toString(),
-      amount: Number(transaction.amount),
-    };
-    onAddTransaction(newTransaction);
-    // Limpar o formulário após o envio
+    if (editingTransaction) {
+      onUpdateTransaction(transaction);
+    } else {
+      const newTransaction = {
+        ...transaction,
+        id: Date.now().toString(),
+        amount: Number(transaction.amount),
+      };
+      onAddTransaction(newTransaction);
+    }
+    resetForm();
+  };
+
+  const resetForm = () => {
     setTransaction({
       id: "",
       description: "",
@@ -68,7 +90,7 @@ const TransactionForm: React.FC<{
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
       <Typography variant="h5" gutterBottom>
-        Adicionar Nova Transação
+        {editingTransaction ? "Editar Transação" : "Adicionar Nova Transação"}
       </Typography>
       <TextField
         fullWidth
@@ -148,7 +170,7 @@ const TransactionForm: React.FC<{
           },
         }}
       >
-        Adicionar Transação
+        {editingTransaction ? "Atualizar Transação" : "Adicionar Transação"}
       </Button>
     </Box>
   );
