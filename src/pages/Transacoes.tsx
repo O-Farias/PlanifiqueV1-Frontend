@@ -30,6 +30,8 @@ const Transacoes: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [editingTransaction, setEditingTransaction] =
+    useState<Transaction | null>(null);
 
   useEffect(() => {
     const storedTransactions = localStorage.getItem("transactions");
@@ -38,10 +40,33 @@ const Transacoes: React.FC = () => {
     }
   }, []);
 
+  const updateLocalStorage = (updatedTransactions: Transaction[]) => {
+    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+  };
+
   const handleAddTransaction = (transaction: Transaction) => {
     const updatedTransactions = [...transactions, transaction];
     setTransactions(updatedTransactions);
-    localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+    updateLocalStorage(updatedTransactions);
+  };
+
+  const handleUpdateTransaction = (updatedTransaction: Transaction) => {
+    const updatedTransactions = transactions.map((t) =>
+      t.id === updatedTransaction.id ? updatedTransaction : t
+    );
+    setTransactions(updatedTransactions);
+    updateLocalStorage(updatedTransactions);
+    setEditingTransaction(null);
+  };
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setEditingTransaction(transaction);
+  };
+
+  const handleDeleteTransaction = (id: string) => {
+    const updatedTransactions = transactions.filter((t) => t.id !== id);
+    setTransactions(updatedTransactions);
+    updateLocalStorage(updatedTransactions);
   };
 
   const handleLogout = async () => {
@@ -105,8 +130,16 @@ const Transacoes: React.FC = () => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <TransactionForm onAddTransaction={handleAddTransaction} />
-        <TransactionList transactions={transactions} />
+        <TransactionForm
+          onAddTransaction={handleAddTransaction}
+          onUpdateTransaction={handleUpdateTransaction}
+          editingTransaction={editingTransaction}
+        />
+        <TransactionList
+          transactions={transactions}
+          onEditTransaction={handleEditTransaction}
+          onDeleteTransaction={handleDeleteTransaction}
+        />
       </Box>
     </Box>
   );
