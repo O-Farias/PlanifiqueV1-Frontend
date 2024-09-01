@@ -15,7 +15,6 @@ const RecuperarSenha: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Tentativa de recuperação de senha para:", email);
-    // Lógica para recuperar a senha
   };
 
   return (

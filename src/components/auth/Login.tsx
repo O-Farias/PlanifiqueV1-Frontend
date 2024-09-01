@@ -21,27 +21,26 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError(""); // Limpa o erro
+    setError("");
 
     if (!email || !senha) {
       setError("Por favor, preencha todos os campos.");
       return;
     }
 
-    // Valida o e-mail
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Por favor, insira um e-mail válido.");
       return;
     }
 
     console.log("Tentativa de login com:", email, senha);
-    // Simula o processo de login
+
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      // Adicionar a lógica real de autenticação
+
       navigate("/dashboard");
-    }, 3000); // 3 segundos de carregamento
+    }, 3000);
   };
 
   return (

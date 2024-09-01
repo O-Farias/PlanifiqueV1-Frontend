@@ -11,7 +11,6 @@ const Cadastro: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Tentativa de cadastro com:", nome, email, senha);
-    // lógica de cadastro
   };
 
   return (
