@@ -1,5 +1,7 @@
 import React from "react";
-import { Box, List, ListItem, ListItemText } from "@mui/material";
+import { Box, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Transaction {
   id: string;
@@ -11,14 +13,40 @@ interface Transaction {
 
 interface TransactionListProps {
   transactions: Transaction[];
+  onEditTransaction: (transaction: Transaction) => void;
+  onDeleteTransaction: (id: string) => void;
 }
 
-const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
+const TransactionList: React.FC<TransactionListProps> = ({
+  transactions,
+  onEditTransaction,
+  onDeleteTransaction,
+}) => {
   return (
     <Box>
       <List>
         {transactions.map((transaction) => (
-          <ListItem key={transaction.id}>
+          <ListItem
+            key={transaction.id}
+            secondaryAction={
+              <>
+                <IconButton
+                  edge="end"
+                  aria-label="edit"
+                  onClick={() => onEditTransaction(transaction)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => onDeleteTransaction(transaction.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
+          >
             <ListItemText
               primary={transaction.description}
               secondary={`Categoria: ${
