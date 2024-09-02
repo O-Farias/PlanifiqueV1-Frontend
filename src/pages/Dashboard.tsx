@@ -21,8 +21,6 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    // lógica para limpar o estado de autenticação,
-
     navigate("/login");
   };
 
