@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   List,
@@ -6,6 +6,12 @@ import {
   ListItemText,
   IconButton,
   Tooltip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,6 +35,28 @@ const TransactionList: React.FC<TransactionListProps> = ({
   onEditTransaction,
   onDeleteTransaction,
 }) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState<string | null>(
+    null
+  );
+
+  const handleOpenDialog = (id: string) => {
+    setTransactionToDelete(id);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setTransactionToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (transactionToDelete) {
+      onDeleteTransaction(transactionToDelete);
+      handleCloseDialog();
+    }
+  };
+
   return (
     <Box>
       <List>
@@ -43,16 +71,16 @@ const TransactionList: React.FC<TransactionListProps> = ({
                     aria-label="edit"
                     onClick={() => onEditTransaction(transaction)}
                   >
-                    <EditIcon sx={{ color: "#1976d2" }} />{" "}
+                    <EditIcon sx={{ color: "#1976d2" }} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Excluir">
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => onDeleteTransaction(transaction.id)}
+                    onClick={() => handleOpenDialog(transaction.id)}
                   >
-                    <DeleteIcon sx={{ color: "#d32f2f" }} />{" "}
+                    <DeleteIcon sx={{ color: "#d32f2f" }} />
                   </IconButton>
                 </Tooltip>
               </>
@@ -69,6 +97,27 @@ const TransactionList: React.FC<TransactionListProps> = ({
           </ListItem>
         ))}
       </List>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirmar exclusão"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza que deseja remover esta transação?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancelar</Button>
+          <Button onClick={handleConfirmDelete} autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
