@@ -15,6 +15,12 @@ import {
   Snackbar,
   Alert,
   Popover,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  CircularProgress,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -52,6 +58,9 @@ const Categorias: React.FC = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = async () => {
     // lógica para limpar o estado de autenticação
@@ -95,10 +104,29 @@ const Categorias: React.FC = () => {
   };
 
   const handleDeleteCategory = (index: number) => {
-    const deletedCategory = categories[index].name;
-    setCategories(categories.filter((_, i) => i !== index));
-    setSnackbarMessage(`Categoria "${deletedCategory}" removida com sucesso!`);
-    setOpenSnackbar(true);
+    setCategoryToDelete(index);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setCategoryToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (categoryToDelete !== null) {
+      setIsLoading(true);
+      setTimeout(() => {
+        const deletedCategory = categories[categoryToDelete].name;
+        setCategories(categories.filter((_, i) => i !== categoryToDelete));
+        setSnackbarMessage(
+          `Categoria "${deletedCategory}" removida com sucesso!`
+        );
+        setOpenSnackbar(true);
+        setIsLoading(false);
+        handleCloseDialog();
+      }, 1000); // Simula uma operação assíncrona
+    }
   };
 
   const handleColorButtonClick = (
@@ -328,6 +356,33 @@ const Categorias: React.FC = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirmar exclusão"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza de que deseja excluir esta categoria?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Confirmar"
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
