@@ -12,6 +12,7 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -39,6 +40,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOpenDialog = (id: string) => {
     setTransactionToDelete(id);
@@ -46,14 +48,20 @@ const TransactionList: React.FC<TransactionListProps> = ({
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setTransactionToDelete(null);
+    if (!isLoading) {
+      setOpenDialog(false);
+      setTransactionToDelete(null);
+    }
   };
 
   const handleConfirmDelete = () => {
     if (transactionToDelete) {
-      onDeleteTransaction(transactionToDelete);
-      handleCloseDialog();
+      setIsLoading(true);
+      setTimeout(() => {
+        onDeleteTransaction(transactionToDelete);
+        setIsLoading(false);
+        handleCloseDialog();
+      }, 2000);
     }
   };
 
@@ -112,9 +120,18 @@ const TransactionList: React.FC<TransactionListProps> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleConfirmDelete} autoFocus>
-            Confirmar
+          <Button onClick={handleCloseDialog} disabled={isLoading}>
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            disabled={isLoading}
+            startIcon={
+              isLoading ? <CircularProgress size={20} color="inherit" /> : null
+            }
+          >
+            {isLoading ? "Excluindo..." : "Confirmar"}
           </Button>
         </DialogActions>
       </Dialog>
