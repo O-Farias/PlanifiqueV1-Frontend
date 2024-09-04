@@ -63,7 +63,6 @@ const Categorias: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = async () => {
-    // lógica para limpar o estado de autenticação
     navigate("/login");
   };
 
@@ -125,7 +124,7 @@ const Categorias: React.FC = () => {
         setOpenSnackbar(true);
         setIsLoading(false);
         handleCloseDialog();
-      }, 1000); // Simula uma operação assíncrona
+      }, 1000);
     }
   };
 
