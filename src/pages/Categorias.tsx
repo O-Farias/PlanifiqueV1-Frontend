@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   AppBar,
@@ -101,6 +101,19 @@ const Categorias: React.FC = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [error, setError] = useState(false);
 
+  // Carregar categorias do localStorage ao montar o componente
+  useEffect(() => {
+    const savedCategories = localStorage.getItem("categories");
+    if (savedCategories) {
+      setCategories(JSON.parse(savedCategories));
+    }
+  }, []);
+
+  // Função para salvar as categorias no localStorage
+  const saveCategoriesToLocalStorage = (categories: Category[]) => {
+    localStorage.setItem("categories", JSON.stringify(categories));
+  };
+
   const handleAddCategory = () => {
     if (newCategory.name.trim() === "") {
       setError(true);
@@ -109,14 +122,16 @@ const Categorias: React.FC = () => {
 
     setError(false);
 
+    let updatedCategories = [];
     if (editIndex !== null) {
-      const updatedCategories = [...categories];
+      updatedCategories = [...categories];
       updatedCategories[editIndex] = newCategory;
-      setCategories(updatedCategories);
       setEditIndex(null);
     } else {
-      setCategories([...categories, newCategory]);
+      updatedCategories = [...categories, newCategory];
     }
+    setCategories(updatedCategories);
+    saveCategoriesToLocalStorage(updatedCategories); // Salva no localStorage
     setNewCategory({ name: "", icon: "casa" });
   };
 
@@ -129,6 +144,7 @@ const Categorias: React.FC = () => {
   const handleDeleteCategory = (index: number) => {
     const updatedCategories = categories.filter((_, i) => i !== index);
     setCategories(updatedCategories);
+    saveCategoriesToLocalStorage(updatedCategories); // Salva no localStorage após a exclusão
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -281,8 +297,8 @@ const Categorias: React.FC = () => {
             <List
               sx={{
                 mt: 2,
-                maxHeight: "400px", // Define uma altura máxima fixa
-                overflowY: categories.length >= 4 ? "auto" : "visible", // Aplica o overflow somente se houver 4 ou mais categorias
+                maxHeight: "400px",
+                overflowY: categories.length >= 4 ? "auto" : "visible",
                 bgcolor: "background.paper",
                 borderRadius: 1,
                 boxShadow: 1,
