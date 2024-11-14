@@ -101,7 +101,6 @@ const Categorias: React.FC = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [error, setError] = useState(false);
 
-  // Carregar categorias do localStorage ao montar o componente
   useEffect(() => {
     const savedCategories = localStorage.getItem("categories");
     if (savedCategories) {
@@ -109,7 +108,6 @@ const Categorias: React.FC = () => {
     }
   }, []);
 
-  // Função para salvar as categorias no localStorage
   const saveCategoriesToLocalStorage = (categories: Category[]) => {
     localStorage.setItem("categories", JSON.stringify(categories));
   };
@@ -131,7 +129,7 @@ const Categorias: React.FC = () => {
       updatedCategories = [...categories, newCategory];
     }
     setCategories(updatedCategories);
-    saveCategoriesToLocalStorage(updatedCategories); // Salva no localStorage
+    saveCategoriesToLocalStorage(updatedCategories);
     setNewCategory({ name: "", icon: "casa" });
   };
 
@@ -144,7 +142,7 @@ const Categorias: React.FC = () => {
   const handleDeleteCategory = (index: number) => {
     const updatedCategories = categories.filter((_, i) => i !== index);
     setCategories(updatedCategories);
-    saveCategoriesToLocalStorage(updatedCategories); // Salva no localStorage após a exclusão
+    saveCategoriesToLocalStorage(updatedCategories);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -332,13 +330,14 @@ const Categorias: React.FC = () => {
                       <IconButton
                         edge="end"
                         onClick={() => handleEditCategory(index)}
-                        sx={{ mr: 1 }}
+                        sx={{ mr: 1, color: "#1976d2" }} // Cor de edição
                       >
                         <Edit />
                       </IconButton>
                       <IconButton
                         edge="end"
                         onClick={() => handleDeleteCategory(index)}
+                        sx={{ color: "#d32f2f" }} // Cor de exclusão
                       >
                         <Delete />
                       </IconButton>
