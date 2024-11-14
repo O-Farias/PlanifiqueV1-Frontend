@@ -207,7 +207,7 @@ const Categorias: React.FC = () => {
             onChange={(e) =>
               setNewCategory({ ...newCategory, name: e.target.value })
             }
-            onKeyPress={handleKeyPress} // Captura o pressionamento de tecla
+            onKeyPress={handleKeyPress}
             error={error}
             helperText={error ? "O nome da categoria é obrigatório" : ""}
           />
@@ -281,8 +281,8 @@ const Categorias: React.FC = () => {
             <List
               sx={{
                 mt: 2,
-                maxHeight: "400px",
-                overflowY: "auto",
+                maxHeight: "400px", // Define uma altura máxima fixa
+                overflowY: categories.length >= 4 ? "auto" : "visible", // Aplica o overflow somente se houver 4 ou mais categorias
                 bgcolor: "background.paper",
                 borderRadius: 1,
                 boxShadow: 1,
