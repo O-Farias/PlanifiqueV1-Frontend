@@ -99,9 +99,15 @@ const Categorias: React.FC = () => {
     icon: "casa",
   });
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [error, setError] = useState(false);
 
   const handleAddCategory = () => {
-    if (newCategory.name.trim() === "") return;
+    if (newCategory.name.trim() === "") {
+      setError(true);
+      return;
+    }
+
+    setError(false);
 
     if (editIndex !== null) {
       const updatedCategories = [...categories];
@@ -117,11 +123,18 @@ const Categorias: React.FC = () => {
   const handleEditCategory = (index: number) => {
     setNewCategory(categories[index]);
     setEditIndex(index);
+    setError(false);
   };
 
   const handleDeleteCategory = (index: number) => {
     const updatedCategories = categories.filter((_, i) => i !== index);
     setCategories(updatedCategories);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleAddCategory();
+    }
   };
 
   const handleLogout = async () => {
@@ -194,6 +207,9 @@ const Categorias: React.FC = () => {
             onChange={(e) =>
               setNewCategory({ ...newCategory, name: e.target.value })
             }
+            onKeyPress={handleKeyPress} // Captura o pressionamento de tecla
+            error={error}
+            helperText={error ? "O nome da categoria é obrigatório" : ""}
           />
 
           <FormControl fullWidth margin="normal">
@@ -261,7 +277,6 @@ const Categorias: React.FC = () => {
             {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
           </Button>
 
-          {/* Renderiza a lista apenas se houver categorias */}
           {categories.length > 0 && (
             <List
               sx={{
