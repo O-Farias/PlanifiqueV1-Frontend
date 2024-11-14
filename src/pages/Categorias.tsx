@@ -207,6 +207,31 @@ const Categorias: React.FC = () => {
                   icon: e.target.value as keyof typeof categoryIconsList,
                 })
               }
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  },
+                },
+                sx: {
+                  "& .MuiPaper-root": {
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "4px",
+                      "&:hover": {
+                        backgroundColor: "#555",
+                      },
+                    },
+                  },
+                },
+              }}
             >
               {Object.entries(categoryIconsList).map(([key, value]) => {
                 const Icon = value.icon;
@@ -227,42 +252,71 @@ const Categorias: React.FC = () => {
             variant="contained"
             onClick={handleAddCategory}
             startIcon={<AddCircleOutline />}
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+              mb: 0,
+              paddingBottom: 0,
+            }}
           >
             {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
           </Button>
 
-          <List sx={{ mt: 2 }}>
-            {categories.map((category, index) => {
-              const IconComponent = categoryIconsList[category.icon].icon;
-              return (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <IconComponent />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={category.name}
-                    secondary={categoryIconsList[category.icon].label}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleEditCategory(index)}
-                      sx={{ mr: 1 }}
-                    >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleDeleteCategory(index)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+          {/* Renderiza a lista apenas se houver categorias */}
+          {categories.length > 0 && (
+            <List
+              sx={{
+                mt: 2,
+                maxHeight: "400px",
+                overflowY: "auto",
+                bgcolor: "background.paper",
+                borderRadius: 1,
+                boxShadow: 1,
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f1f1f1",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#888",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: "#555",
+                  },
+                },
+              }}
+            >
+              {categories.map((category, index) => {
+                const IconComponent = categoryIconsList[category.icon].icon;
+                return (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <IconComponent />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={category.name}
+                      secondary={categoryIconsList[category.icon].label}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        onClick={() => handleEditCategory(index)}
+                        sx={{ mr: 1 }}
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        edge="end"
+                        onClick={() => handleDeleteCategory(index)}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          )}
         </Box>
       </Box>
     </Box>
