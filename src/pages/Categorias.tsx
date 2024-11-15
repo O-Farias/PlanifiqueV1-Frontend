@@ -17,6 +17,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -327,20 +328,24 @@ const Categorias: React.FC = () => {
                       secondary={categoryIconsList[category.icon].label}
                     />
                     <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        onClick={() => handleEditCategory(index)}
-                        sx={{ mr: 1, color: "#1976d2" }} // Cor de edição
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
-                        edge="end"
-                        onClick={() => handleDeleteCategory(index)}
-                        sx={{ color: "#d32f2f" }} // Cor de exclusão
-                      >
-                        <Delete />
-                      </IconButton>
+                      <Tooltip title="Editar">
+                        <IconButton
+                          edge="end"
+                          aria-label="edit"
+                          onClick={() => handleEditCategory(index)}
+                        >
+                          <Edit sx={{ color: "#1976d2" }} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Excluir">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => handleDeleteCategory(index)}
+                        >
+                          <Delete sx={{ color: "#d32f2f" }} />
+                        </IconButton>
+                      </Tooltip>
                     </ListItemSecondaryAction>
                   </ListItem>
                 );
