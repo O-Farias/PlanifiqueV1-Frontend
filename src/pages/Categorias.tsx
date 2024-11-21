@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   AppBar,
@@ -6,143 +6,154 @@ import {
   Typography,
   IconButton,
   CssBaseline,
-  TextField,
-  Button,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
+  TextField,
+  Button,
   ListItemSecondaryAction,
-  Snackbar,
-  Alert,
-  Popover,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
+import {
+  AddCircleOutline,
+  Edit,
+  Delete,
+  HomeOutlined,
+  ShoppingCartOutlined,
+  FastfoodOutlined,
+  DirectionsCarOutlined,
+  LocalHospitalOutlined,
+  SchoolOutlined,
+  WorkOutline,
+  SportsEsportsOutlined,
+  AccountBalanceOutlined,
+  LocalMoviesOutlined,
+} from "@mui/icons-material";
 import { useSidebar } from "../contexts/SidebarContext";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 import UserAvatar from "../components/UserAvatar";
-import { ChromePicker } from "react-color";
+
+const drawerWidth = 240;
+const primaryColor = "#FF4500";
+
+const categoryIconsList = {
+  casa: {
+    icon: HomeOutlined,
+    label: "Casa",
+  },
+  compras: {
+    icon: ShoppingCartOutlined,
+    label: "Compras",
+  },
+  alimentacao: {
+    icon: FastfoodOutlined,
+    label: "Alimentação",
+  },
+  transporte: {
+    icon: DirectionsCarOutlined,
+    label: "Transporte",
+  },
+  saude: {
+    icon: LocalHospitalOutlined,
+    label: "Saúde",
+  },
+  educacao: {
+    icon: SchoolOutlined,
+    label: "Educação",
+  },
+  trabalho: {
+    icon: WorkOutline,
+    label: "Trabalho",
+  },
+  lazer: {
+    icon: SportsEsportsOutlined,
+    label: "Lazer",
+  },
+  financas: {
+    icon: AccountBalanceOutlined,
+    label: "Finanças",
+  },
+  entretenimento: {
+    icon: LocalMoviesOutlined,
+    label: "Entretenimento",
+  },
+};
 
 interface Category {
   name: string;
-  color: string;
+  icon: keyof typeof categoryIconsList;
 }
-
-const drawerWidth = 240;
-const primaryColor = "#FF0000";
 
 const Categorias: React.FC = () => {
   const { isOpen, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
-
-  const [categories, setCategories] = useState<Category[]>([
-    { name: "Aluguel", color: "#FF5733" },
-    { name: "Alimentação", color: "#33FF57" },
-    { name: "Transporte", color: "#3357FF" },
-    { name: "Lazer", color: "#F033FF" },
-    { name: "Outros", color: "#33FFF0" },
-  ]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [newCategory, setNewCategory] = useState<Category>({
     name: "",
-    color: "#000000",
+    icon: "casa",
   });
   const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleLogout = async () => {
-    navigate("/login");
+  useEffect(() => {
+    const savedCategories = localStorage.getItem("categories");
+    if (savedCategories) {
+      setCategories(JSON.parse(savedCategories));
+    }
+  }, []);
+
+  const saveCategoriesToLocalStorage = (categories: Category[]) => {
+    localStorage.setItem("categories", JSON.stringify(categories));
   };
 
   const handleAddCategory = () => {
     if (newCategory.name.trim() === "") {
-      setSnackbarMessage("Por favor, insira um nome para a categoria.");
-      setOpenSnackbar(true);
+      setError(true);
       return;
     }
 
+    setError(false);
+
+    let updatedCategories = [];
     if (editIndex !== null) {
-      const updatedCategories = [...categories];
+      updatedCategories = [...categories];
       updatedCategories[editIndex] = newCategory;
-      setCategories(updatedCategories);
       setEditIndex(null);
-      setSnackbarMessage("Categoria editada com sucesso!");
     } else {
-      setCategories([...categories, newCategory]);
-      setSnackbarMessage("Nova categoria adicionada com sucesso!");
+      updatedCategories = [...categories, newCategory];
     }
-    setNewCategory({ name: "", color: "#000000" });
-    setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackbar(false);
+    setCategories(updatedCategories);
+    saveCategoriesToLocalStorage(updatedCategories);
+    setNewCategory({ name: "", icon: "casa" });
   };
 
   const handleEditCategory = (index: number) => {
     setNewCategory(categories[index]);
     setEditIndex(index);
+    setError(false);
   };
 
   const handleDeleteCategory = (index: number) => {
-    setCategoryToDelete(index);
-    setOpenDialog(true);
+    const updatedCategories = categories.filter((_, i) => i !== index);
+    setCategories(updatedCategories);
+    saveCategoriesToLocalStorage(updatedCategories);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setCategoryToDelete(null);
-  };
-
-  const handleConfirmDelete = () => {
-    if (categoryToDelete !== null) {
-      setIsLoading(true);
-      setTimeout(() => {
-        const deletedCategory = categories[categoryToDelete].name;
-        setCategories(categories.filter((_, i) => i !== categoryToDelete));
-        setSnackbarMessage(
-          `Categoria "${deletedCategory}" removida com sucesso!`
-        );
-        setOpenSnackbar(true);
-        setIsLoading(false);
-        handleCloseDialog();
-      }, 1000);
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleAddCategory();
     }
   };
 
-  const handleColorButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleColorPickerClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "color-popover" : undefined;
-
-  const handleColorChange = (color: any) => {
-    setNewCategory({ ...newCategory, color: color.hex });
+  const handleLogout = async () => {
+    navigate("/login");
   };
 
   return (
@@ -200,188 +211,149 @@ const Categorias: React.FC = () => {
 
       <Sidebar drawerWidth={drawerWidth} onLogout={handleLogout} />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, overflowY: "auto" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Box
-          sx={{
-            backgroundColor: "#fff",
-            borderRadius: 5,
-            padding: 3,
-            marginBottom: 2,
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Gerenciar Categorias
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-            <TextField
-              label="Nova Categoria"
-              value={newCategory.name}
+        <Box sx={{ maxWidth: 600, margin: "0 auto" }}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Nome da Categoria"
+            value={newCategory.name}
+            onChange={(e) =>
+              setNewCategory({ ...newCategory, name: e.target.value })
+            }
+            onKeyPress={handleKeyPress}
+            error={error}
+            helperText={error ? "O nome da categoria é obrigatório" : ""}
+          />
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Ícone</InputLabel>
+            <Select
+              value={newCategory.icon}
+              label="Ícone"
               onChange={(e) =>
-                setNewCategory({ ...newCategory, name: e.target.value })
+                setNewCategory({
+                  ...newCategory,
+                  icon: e.target.value as keyof typeof categoryIconsList,
+                })
               }
-              margin="normal"
-              sx={{ width: "200px" }}
-              InputProps={{
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                  },
+                },
                 sx: {
-                  height: "40px",
-                  "& .MuiInputBase-input": {
-                    height: "100%",
-                    padding: "10px",
-                    boxSizing: "border-box",
+                  "& .MuiPaper-root": {
+                    "&::-webkit-scrollbar": {
+                      width: "8px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      backgroundColor: "#f1f1f1",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "4px",
+                      "&:hover": {
+                        backgroundColor: "#555",
+                      },
+                    },
                   },
                 },
               }}
-              InputLabelProps={{
-                sx: {
-                  lineHeight: "13px",
-                },
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  handleAddCategory();
-                }
-              }}
-            />
-            <Button
-              aria-describedby={id}
-              onClick={handleColorButtonClick}
+            >
+              {Object.entries(categoryIconsList).map(([key, value]) => {
+                const Icon = value.icon;
+                return (
+                  <MenuItem key={key} value={key}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Icon />
+                      <span>{value.label}</span>
+                    </Box>
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleAddCategory}
+            startIcon={<AddCircleOutline />}
+            sx={{
+              mt: 2,
+              mb: 0,
+              paddingBottom: 0,
+            }}
+          >
+            {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
+          </Button>
+
+          {categories.length > 0 && (
+            <List
               sx={{
-                width: 40,
-                height: 40,
-                minWidth: 40,
-                backgroundColor: newCategory.color,
-                marginTop: "16px",
-                "&:hover": {
-                  backgroundColor: newCategory.color,
+                mt: 2,
+                maxHeight: "400px",
+                overflowY: categories.length >= 4 ? "auto" : "visible",
+                bgcolor: "background.paper",
+                borderRadius: 1,
+                boxShadow: 1,
+                "&::-webkit-scrollbar": {
+                  width: "8px",
                 },
-              }}
-              title="Selecionar cor"
-            />
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleColorPickerClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f1f1f1",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#888",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: "#555",
+                  },
+                },
               }}
             >
-              <ChromePicker
-                color={newCategory.color}
-                onChange={handleColorChange}
-                disableAlpha={true}
-              />
-            </Popover>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: primaryColor,
-                color: "#fff",
-                height: "40px",
-                marginTop: "16px",
-                "&:hover": {
-                  backgroundColor: "#FF4500",
-                },
-              }}
-              onClick={handleAddCategory}
-            >
-              {editIndex !== null ? "Editar Categoria" : "Adicionar Categoria"}
-            </Button>
-          </Box>
-        </Box>
-        <Box sx={{ maxHeight: 300, overflowY: "auto" }}>
-          <List sx={{ padding: 0 }}>
-            {categories.map((category, index) => (
-              <ListItem key={index} sx={{ borderBottom: "1px solid #ccc" }}>
-                <Box
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: "50%",
-                    backgroundColor: category.color,
-                    marginRight: 2,
-                  }}
-                />
-                <ListItemText primary={category.name} />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="edit"
-                    onClick={() => handleEditCategory(index)}
-                    sx={{ color: "#1976d2" }}
-                    title="Editar"
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => handleDeleteCategory(index)}
-                    sx={{ color: "#d32f2f" }}
-                    title="Excluir"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
+              {categories.map((category, index) => {
+                const IconComponent = categoryIconsList[category.icon].icon;
+                return (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <IconComponent />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={category.name}
+                      secondary={categoryIconsList[category.icon].label}
+                    />
+                    <ListItemSecondaryAction>
+                      <Tooltip title="Editar">
+                        <IconButton
+                          edge="end"
+                          aria-label="edit"
+                          onClick={() => handleEditCategory(index)}
+                        >
+                          <Edit sx={{ color: "#1976d2" }} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Excluir">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => handleDeleteCategory(index)}
+                        >
+                          <Delete sx={{ color: "#d32f2f" }} />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          )}
         </Box>
       </Box>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        sx={{
-          top: { xs: 72, sm: 80 },
-          right: { xs: 16, sm: 24 },
-        }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={
-            snackbarMessage.includes("Por favor")
-              ? "error"
-              : snackbarMessage.includes("removida")
-              ? "info"
-              : "success"
-          }
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirmar exclusão"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Tem certeza de que deseja excluir esta categoria?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-            {isLoading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              "Confirmar"
-            )}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };
