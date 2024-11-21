@@ -87,8 +87,8 @@ const Login: React.FC = () => {
             sx={{
               color: "#fff",
               fontWeight: "bold",
-              mb: 0.5, 
-              fontSize: "16px", 
+              mb: 0.5,
+              fontSize: "16px",
             }}
           >
             E-mail:
@@ -128,9 +128,9 @@ const Login: React.FC = () => {
             sx={{
               color: "#fff",
               fontWeight: "bold",
-              mt: 1.5, 
-              mb: 0.5, 
-              fontSize: "16px", 
+              mt: 1.5,
+              mb: 0.5,
+              fontSize: "16px",
             }}
           >
             Senha:
@@ -172,8 +172,18 @@ const Login: React.FC = () => {
             sx={{
               mt: 3,
               mb: 2,
-              backgroundColor: "#00bfa5",
-              "&:hover": { backgroundColor: "#008c7a" },
+              padding: "12px 0",
+              fontSize: "16px",
+              fontWeight: "bold",
+              borderRadius: "25px",
+              background: "linear-gradient(90deg, #00bfa5, #00796b)",
+              color: "#fff",
+              textTransform: "none",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              "&:hover": {
+                background: "linear-gradient(90deg, #00796b, #004d40)",
+                boxShadow: "0px 6px 8px rgba(0, 0, 0, 0.2)",
+              },
             }}
             disabled={isLoading}
           >
@@ -183,6 +193,7 @@ const Login: React.FC = () => {
               "Acessar"
             )}
           </Button>
+
           <Typography
             sx={{
               textAlign: "center",
