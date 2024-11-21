@@ -82,7 +82,6 @@ const Login: React.FC = () => {
           noValidate
           sx={{ width: "100%", maxWidth: 360 }}
         >
-          {/* Texto acima do campo E-mail */}
           <Typography
             sx={{
               color: "#fff",
@@ -123,7 +122,6 @@ const Login: React.FC = () => {
               },
             }}
           />
-          {/* Texto acima do campo Senha */}
           <Typography
             sx={{
               color: "#fff",
@@ -193,7 +191,6 @@ const Login: React.FC = () => {
               "Acessar"
             )}
           </Button>
-
           <Typography
             sx={{
               textAlign: "center",
@@ -210,13 +207,25 @@ const Login: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Seção da direita - Imagem */}
+      {/* Seção da direita - Imagem com gradiente de transição */}
       <Box
         sx={{
           width: "60%",
           backgroundImage: `url(${loginImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          position: "relative",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(to right, #111 10%, transparent 100%)", // Ajuste do gradiente
+            zIndex: 1,
+          },
+          zIndex: 0,
         }}
       ></Box>
     </Box>
