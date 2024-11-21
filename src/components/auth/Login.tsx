@@ -82,41 +82,84 @@ const Login: React.FC = () => {
           noValidate
           sx={{ width: "100%", maxWidth: 360 }}
         >
+          {/* Texto acima do campo E-mail */}
+          <Typography
+            sx={{
+              color: "#fff",
+              fontWeight: "bold",
+              mb: 0.5, 
+              fontSize: "16px", 
+            }}
+          >
+            E-mail:
+          </Typography>
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
-            label="E-mail"
             name="email"
             autoComplete="email"
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Digite seu e-mail"
             sx={{
-              input: { color: "#fff" },
-              "& label": { color: "#ddd" },
+              input: {
+                color: "#fff",
+                background: "linear-gradient(90deg, #09352D, #136B5A)",
+                borderRadius: "20px",
+                padding: "10px",
+                "&::placeholder": {
+                  color: "#bbb",
+                  transform: "translateY(-3px)",
+                  fontSize: "14px",
+                },
+              },
               "& .MuiOutlinedInput-root": {
+                borderRadius: "20px",
                 "& fieldset": { borderColor: "#ddd" },
                 "&:hover fieldset": { borderColor: "#fff" },
               },
             }}
           />
+          {/* Texto acima do campo Senha */}
+          <Typography
+            sx={{
+              color: "#fff",
+              fontWeight: "bold",
+              mt: 1.5, 
+              mb: 0.5, 
+              fontSize: "16px", 
+            }}
+          >
+            Senha:
+          </Typography>
           <TextField
             margin="normal"
             required
             fullWidth
             name="senha"
-            label="Senha"
             type="password"
             id="senha"
             autoComplete="current-password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
+            placeholder="Digite sua senha"
             sx={{
-              input: { color: "#fff" },
-              "& label": { color: "#ddd" },
+              input: {
+                color: "#fff",
+                background: "linear-gradient(90deg, #09352D, #136B5A)",
+                borderRadius: "20px",
+                padding: "10px",
+                "&::placeholder": {
+                  color: "#bbb",
+                  transform: "translateY(-3px)",
+                  fontSize: "14px",
+                },
+              },
               "& .MuiOutlinedInput-root": {
+                borderRadius: "20px",
                 "& fieldset": { borderColor: "#ddd" },
                 "&:hover fieldset": { borderColor: "#fff" },
               },
