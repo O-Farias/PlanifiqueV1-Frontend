@@ -4,13 +4,13 @@ import {
   Button,
   TextField,
   Typography,
-  Container,
   Link,
   Alert,
   CircularProgress,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import loginImage from "/src/public/assets/images/login.png";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -46,116 +46,125 @@ const Login: React.FC = () => {
   return (
     <Box
       sx={{
-        position: "relative",
+        display: "flex",
         width: "100vw",
         height: "100vh",
         overflow: "hidden",
-        background:
-          "linear-gradient(-45deg, #e0e0e0, #b0bec5, #78909c, #546e7a)",
-        backgroundSize: "400% 400%",
-        animation: "gradientBG 15s ease infinite",
-        "@keyframes gradientBG": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
       }}
     >
-      <Container
-        component="main"
-        maxWidth="xs"
+      {/* Seção da esquerda - Formulário */}
+      <Box
         sx={{
-          height: "100vh",
+          width: "40%",
+          padding: 4,
+          backgroundColor: "#111",
+          color: "#fff",
           display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          position: "relative",
-          zIndex: 1,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100%",
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            padding: 3,
-            borderRadius: 2,
-            boxShadow: 3,
-          }}
-        >
-          <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-            Login
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }}>
+            Planifique
           </Typography>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ width: "100%" }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="E-mail"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!error && !email}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="senha"
-              label="Senha"
-              type="password"
-              id="senha"
-              autoComplete="current-password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              error={!!error && !senha}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={isLoading}
-            >
-              {isLoading ? <CircularProgress size={24} /> : "Entrar"}
-            </Button>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mt: 2,
-              }}
-            >
-              <Typography variant="body2">
-                Ainda não possui cadastro?{" "}
-                <Link component={RouterLink} to="/cadastro">
-                  Cadastre-se aqui
-                </Link>
-              </Typography>
-              <Typography variant="body2">
-                <Link component={RouterLink} to="/recuperar-senha">
-                  Esqueceu sua senha?
-                </Link>
-              </Typography>
-            </Box>
-          </Box>
+          <Typography variant="h6">Faça seu login</Typography>
         </Box>
-      </Container>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ width: "100%", maxWidth: 360 }}
+        >
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="E-mail"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{
+              input: { color: "#fff" },
+              "& label": { color: "#ddd" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#ddd" },
+                "&:hover fieldset": { borderColor: "#fff" },
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="senha"
+            label="Senha"
+            type="password"
+            id="senha"
+            autoComplete="current-password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            sx={{
+              input: { color: "#fff" },
+              "& label": { color: "#ddd" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#ddd" },
+                "&:hover fieldset": { borderColor: "#fff" },
+              },
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: "#00bfa5",
+              "&:hover": { backgroundColor: "#008c7a" },
+            }}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Acessar"
+            )}
+          </Button>
+          <Typography
+            sx={{
+              textAlign: "center",
+              color: "#ddd",
+              mt: 2,
+              "& a": { color: "#00bfa5", textDecoration: "none" },
+            }}
+          >
+            Ainda não tenho uma conta.{" "}
+            <Link component={RouterLink} to="/cadastro">
+              Crie uma!
+            </Link>
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Seção da direita - Imagem */}
+      <Box
+        sx={{
+          width: "60%",
+          backgroundImage: `url(${loginImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></Box>
     </Box>
   );
 };
